@@ -27,25 +27,27 @@ pub fn mean(nums: &[f64]) -> Option<f64> {
     let count = nums.len() as f64;
     let mut arithmetic = 0.0;
     let mut sum = 0.0;
-    if count == 0.0 {
-        println!("trying to take the mean of no numbers");
-    } else {
+    if count != 0.0 {
         for num in &nums[..] {
             sum += num;
         }
         arithmetic = sum/count;
     }
-    println!("count = {:?}, sum = {:?}, mean = {:?}", count, sum, arithmetic);
     Some(arithmetic)
 }
 
 #[test]
-fn test_mean_none(){
-    assert_eq!(Some(0.0), mean(&[]));
+fn test_mean_100(){
+    assert_eq!(Some(100.0), mean(&[75.5,100.5,95.5,265.5,-37.0]));
 }
 
 #[test]
 fn test_mean_single(){
+    assert_eq!(Some(25.0), mean(&[25.0]));
+}
+
+#[test]
+fn test_mean_two(){
     assert_eq!(Some(1.0), mean(&[-1.0, 3.0]));
 }
 
@@ -63,7 +65,37 @@ fn test_mean_single(){
 /// assert_eq!(Some(0.0), stddev(&[1.0, 1.0]));
 /// ```
 pub fn stddev(nums: &[f64]) -> Option<f64> {
-    unimplemented!("no stddev yet")
+    let count = nums.len() as f64;
+    let mut sigma = 0.0;
+    let mut i = 0;
+    let xbar = mean(nums).unwrap() as f64;//no error since mean will be Some
+    let mut sqnums = Vec::new();
+    if count != 0.0 {
+        //let mut sigma = 0.0;
+        for val in &nums[..] {
+            let temp = (val - xbar).powf(2.0);
+            sqnums.push(temp);
+            sigma = mean(&sqnums[..]).unwrap().sqrt() as f64;
+        }
+        Some(sigma)
+    } else {
+        None
+    }
+}
+
+#[test]
+fn test_stdev_97(){
+    assert_eq!(97.0, stddev(&[75.5,100.5,95.5,265.5,-37.0]).unwrap().round());
+}
+
+#[test]
+fn test_stdev_single(){
+    assert_eq!(Some(0.0), stddev(&[25.0]));
+}
+
+#[test]
+fn test_stdev_two(){
+    assert_eq!(Some(2.0), stddev(&[-1.0, 3.0]));
 }
 
 /// Median value of input values, taking the value closer
@@ -85,8 +117,26 @@ pub fn median(nums: &[f64]) -> Option<f64> {
     let mut nums = nums.to_owned();
     // https://users.rust-lang.org/t/how-to-sort-a-vec-of-floats/2838/2
     nums.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    if nums.len() != 0 {
+        Some(0.0)//placeholder
+    } else {
+        None
+    }
+}
 
-    unimplemented!("no median yet")
+#[test]
+fn test_median_95(){
+    assert_eq!(Some(95.5), median(&[75.5,100.5,95.5,265.5,-37.0]));
+}
+
+#[test]
+fn test_median_single(){
+    assert_eq!(Some(25.0), median(&[25.0]));
+}
+
+#[test]
+fn test_median_two(){
+    assert_eq!(Some(-1.0), median(&[-1.0, 3.0]));
 }
 
 /// L2 norm (Euclidean norm) of input values. The L2
@@ -104,4 +154,19 @@ pub fn median(nums: &[f64]) -> Option<f64> {
 /// ```
 pub fn l2(nums: &[f64]) -> Option<f64> {
     unimplemented!("no l2 yet")
+}
+
+#[test]
+fn test_l2_311(){
+    assert_eq!(Some(311.0948408), l2(&[75.5,100.5,95.5,265.5,-37.0]));
+}
+
+#[test]
+fn test_l2_single(){
+    assert_eq!(Some(25.0), l2(&[25.0]));
+}
+
+#[test]
+fn test_l2_two(){
+    assert_eq!(Some(3.162277660), l2(&[-1.0, 3.0]));
 }
