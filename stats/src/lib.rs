@@ -1,4 +1,4 @@
-// Copyright © 2019 Bart Massey
+// Copyright © 2019 Sharice Mayer
 // [This program is licensed under the "MIT License"]
 // Please see the file LICENSE in the source
 // distribution of this software for license terms.
@@ -24,7 +24,29 @@ pub type StatFn = fn(&[f64]) -> Option<f64>;
 /// assert_eq!(Some(0.0), mean(&[-1.0, 1.0]));
 /// ```
 pub fn mean(nums: &[f64]) -> Option<f64> {
-    unimplemented!("no mean yet")
+    let count = nums.len() as f64;
+    let mut arithmetic = 0.0;
+    let mut sum = 0.0;
+    if count == 0.0 {
+        println!("trying to take the mean of no numbers");
+    } else {
+        for num in &nums[..] {
+            sum += num;
+        }
+        arithmetic = sum/count;
+    }
+    println!("count = {:?}, sum = {:?}, mean = {:?}", count, sum, arithmetic);
+    Some(arithmetic)
+}
+
+#[test]
+fn test_mean_none(){
+    assert_eq!(Some(0.0), mean(&[]));
+}
+
+#[test]
+fn test_mean_single(){
+    assert_eq!(Some(1.0), mean(&[-1.0, 3.0]));
 }
 
 /// Population standard deviation of input values. The
